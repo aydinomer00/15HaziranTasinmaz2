@@ -1,24 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Çift `NgModule` importunu düzelttim
+import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
+import { AppComponent } from '../models/app.component';
 import { UserComponent } from '../user/user.component';
 import { PropertyComponent } from '../property/property.component';
 import { LogComponent } from '../log/log.component';
+import { routes } from '../app.routes';
 
 @NgModule({
   declarations: [
+    AppComponent,
     UserComponent,
     PropertyComponent,
     LogComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    RouterModule.forRoot(routes),
   ],
   providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

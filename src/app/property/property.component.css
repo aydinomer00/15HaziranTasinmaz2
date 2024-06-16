@@ -1,0 +1,34 @@
+.property-list {
+    margin: 20px;
+  }
+  
+  .property-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .property-list li {
+    margin: 10px 0;
+  }
+  
+  .property-list button {
+    margin-left: 10px;
+  }
+  
+  form {
+    margin: 20px 0;
+  }
+  
+  label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  
+  input {
+    margin-bottom: 10px;
+  }
+  
+  button[type="submit"] {
+    margin-top: 10px;
+  }
+  

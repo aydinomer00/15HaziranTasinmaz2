@@ -1,3 +1,31 @@
-<div *ngFor="let property of properties">
-  <p>{{ property.name }}</p>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Properties</h2>
+  <ul class="list-group mb-4">
+    <li *ngFor="let property of properties" class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ property.name }} - {{ property.city }}</span>
+      <div>
+        <button (click)="editProperty(property)" class="btn btn-primary btn-sm mr-2">Edit</button>
+        <button (click)="deleteProperty(property.id)" class="btn btn-danger btn-sm">Delete</button>
+      </div>
+    </li>
+  </ul>
+  <button (click)="addProperty()" class="btn btn-success mb-4">Add Property</button>
+
+  <div *ngIf="selectedProperty" class="card">
+    <div class="card-body">
+      <h3 class="card-title">{{ selectedProperty.id ? 'Edit' : 'Add' }} Property</h3>
+      <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input id="name" formControlName="name" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label for="city">City:</label>
+          <input id="city" formControlName="city" type="text" class="form-control"/>
+        </div>
+        <!-- Diğer alanlar için benzer şekilde form-group sınıfı ekleyin -->
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
 </div>

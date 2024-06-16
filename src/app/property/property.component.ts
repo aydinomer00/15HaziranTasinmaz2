@@ -1,42 +1,86 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PropertyService } from '../../services/property.service';
 import { Property } from '../models/property.model';
-
 @Component({
   selector: 'app-property',
   templateUrl: './property.component.html',
   styleUrls: ['./property.component.css']
 })
 export class PropertyComponent implements OnInit {
-  properties: Property[] = [
-    {
-      id: 1,
-      name: 'Property 1',
-      propertyId: 101,
-      userId: 1,
-      city: 'City 1',
-      district: 'District 1',
-      neighborhood: 'Neighborhood 1',
-      plot: 'Plot 1',
-      parcel: 'Parcel 1',
-      type: 'Type 1',
-      coordinates: 'Coordinates 1'
-    },
-    {
-      id: 2,
-      name: 'Property 2',
-      propertyId: 102,
-      userId: 2,
-      city: 'City 2',
-      district: 'District 2',
-      neighborhood: 'Neighborhood 2',
-      plot: 'Plot 2',
-      parcel: 'Parcel 2',
-      type: 'Type 2',
-      coordinates: 'Coordinates 2'
+  properties: Property[] = [];
+  selectedProperty: Property | null = null;
+  propertyForm: FormGroup;
+
+  constructor(private propertyService: PropertyService, private fb: FormBuilder) {
+    this.propertyForm = this.fb.group({
+      id: [null],
+      name: ['', Validators.required],
+      propertyId: [null],
+      userId: [null],
+      city: ['', Validators.required],
+      district: [''],
+      neighborhood: [''],
+      plot: [''],
+      parcel: [''],
+      type: [''],
+      coordinates: ['']
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadProperties();
+  }
+
+  loadProperties(): void {
+    this.propertyService.getProperties().subscribe((data: Property[]) => {
+      this.properties = data;
+    });
+  }
+
+  addProperty(): void {
+    this.selectedProperty = {
+      id: 0,
+      name: '',
+      propertyId: 0,
+      userId: 0,
+      city: '',
+      district: '',
+      neighborhood: '',
+      plot: '',
+      parcel: '',
+      type: '',
+      coordinates: ''
+    };
+    this.propertyForm.reset(this.selectedProperty);
+  }
+
+  editProperty(property: Property): void {
+    this.selectedProperty = property;
+    this.propertyForm.patchValue(property);
+  }
+
+  deleteProperty(id: number): void {
+    this.propertyService.deleteProperty(id).subscribe(() => {
+      this.loadProperties();
+    });
+  }
+
+  onSubmit(): void {
+    if (this.propertyForm.invalid) {
+      return;
     }
-  ];
 
-  constructor() {}
-
-  ngOnInit(): void {}
+    if (this.selectedProperty && this.selectedProperty.id) {
+      this.propertyService.updateProperty(this.propertyForm.value).subscribe(() => {
+        this.loadProperties();
+        this.selectedProperty = null;
+      });
+    } else {
+      this.propertyService.addProperty(this.propertyForm.value).subscribe(() => {
+        this.loadProperties();
+        this.selectedProperty = null;
+      });
+    }
+  }
 }
