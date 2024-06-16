@@ -1,23 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Taşınmaz Yönetimi</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/properties">Properties</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/logs">Logs</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/users">Users</a>
-      </li>
-    </ul>
-  </div>
+<mat-toolbar color="primary">
+  <span>Taşınmaz Yönetimi</span>
+</mat-toolbar>
+<nav>
+  <a mat-button routerLink="/properties">Properties</a>
+  <a mat-button routerLink="/logs">Logs</a>
+  <a mat-button routerLink="/users">Users</a>
 </nav>
 <div class="container mt-4">
   <router-outlet></router-outlet>
-
 </div>

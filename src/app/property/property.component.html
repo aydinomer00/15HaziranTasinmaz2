@@ -1,28 +1,26 @@
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Properties</h2>
-  <ul class="list-group mb-4">
-    <li *ngFor="let property of properties" class="list-group-item d-flex justify-content-between align-items-center">
-      <span>{{ property.name }} - {{ property.city }}</span>
-      <div>
-        <button (click)="editProperty(property)" class="btn btn-primary btn-sm mr-2">Edit</button>
-        <button (click)="deleteProperty(property.id)" class="btn btn-danger btn-sm">Delete</button>
-      </div>
+<div class="container mt-4">
+  <button mat-raised-button color="primary" (click)="addProperty()">Add Property</button>
+  <ul class="list-group mt-2">
+    <li class="list-group-item" *ngFor="let property of properties">
+      {{ property.name }} - {{ property.city }}
+      <button mat-button color="accent" (click)="editProperty(property)">Edit</button>
+      <button mat-button color="warn" (click)="deleteProperty(property.id)">Delete</button>
     </li>
   </ul>
-  <button (click)="addProperty()" class="btn btn-success mb-4">Add Property</button>
-
-  <div *ngIf="selectedProperty" class="card">
-    <div class="card-body">
-      <h3 class="card-title">{{ selectedProperty.id ? 'Edit' : 'Add' }} Property</h3>
-      <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
-        <label for="name">Name:</label>
-        <input formControlName="name" id="name" type="text" class="form-control">
-        
-        <label for="city">City:</label>
-        <input formControlName="city" id="city" type="text" class="form-control">
-      
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
-    </div>
+  <div *ngIf="selectedProperty" class="mt-4">
+    <h3>{{ selectedProperty.id ? 'Edit' : 'Add' }} Property</h3>
+    <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>City</mat-label>
+        <input matInput formControlName="city">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        {{ selectedProperty.id ? 'Update' : 'Save' }}
+      </button>
+    </form>
   </div>
 </div>

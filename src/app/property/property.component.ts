@@ -1,34 +1,42 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
-interface Property {
-  id: number;
-  name: string;
-  city: string;
-}
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PropertyService } from '../../services/property.service';
+import { Property } from '../models/property.model';
 
 @Component({
   selector: 'app-property',
   templateUrl: './property.component.html',
-  styleUrls: ['./property.component.css'],
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  styleUrls: ['./property.component.css']
 })
-export class PropertyComponent {
+export class PropertyComponent implements OnInit {
   properties: Property[] = [];
   selectedProperty: Property | null = null;
   propertyForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private propertyService: PropertyService, private fb: FormBuilder) {
     this.propertyForm = this.fb.group({
-      name: [''],
-      city: ['']
+      name: ['', Validators.required],
+      city: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadProperties();
+  }
+
+  loadProperties() {
+    this.propertyService.getProperties().subscribe(data => {
+      this.properties = data;
     });
   }
 
   addProperty() {
-    // Implement add property logic
+    if (this.propertyForm.valid) {
+      this.propertyService.addProperty(this.propertyForm.value).subscribe(() => {
+        this.loadProperties();
+        this.propertyForm.reset();
+      });
+    }
   }
 
   editProperty(property: Property) {
@@ -37,14 +45,20 @@ export class PropertyComponent {
   }
 
   deleteProperty(id: number) {
-    // Implement delete property logic
+    this.propertyService.deleteProperty(id).subscribe(() => {
+      this.loadProperties();
+    });
   }
 
   onSubmit() {
     if (this.selectedProperty) {
-      // Update existing property
+      this.propertyService.updateProperty(this.selectedProperty.id, this.propertyForm.value).subscribe(() => {
+        this.loadProperties();
+        this.propertyForm.reset();
+        this.selectedProperty = null;
+      });
     } else {
-      // Add new property
+      this.addProperty();
     }
   }
 }

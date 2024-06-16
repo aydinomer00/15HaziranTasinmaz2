@@ -7,7 +7,7 @@ import { Property } from '../app/models/property.model';
   providedIn: 'root'
 })
 export class PropertyService {
-  private apiUrl = 'https://localhost:7051/api/Properties';
+  private apiUrl = 'http://localhost:5000/api/properties'; // API URL'nizi buraya ekleyin
 
   constructor(private http: HttpClient) {}
 
@@ -19,8 +19,8 @@ export class PropertyService {
     return this.http.post<Property>(this.apiUrl, property);
   }
 
-  updateProperty(property: Property): Observable<Property> {
-    return this.http.put<Property>(`${this.apiUrl}/${property.id}`, property);
+  updateProperty(id: number, property: Property): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, property);
   }
 
   deleteProperty(id: number): Observable<void> {
