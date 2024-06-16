@@ -1,30 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
-import { AppComponent } from '../models/app.component';
-import { UserComponent } from '../user/user.component';
-import { PropertyComponent } from '../property/property.component';
-import { LogComponent } from '../log/log.component';
-import { routes } from '../app.routes';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    UserComponent,
-    PropertyComponent,
-    LogComponent
+    // Diğer bileşenler
   ],
   imports: [
+    RouterModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(routes),
+   // RouterModule.forRoot(routes)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  // bootstrap: [AppComponent] // Bunu kaldırın
 })
 export class AppModule { }

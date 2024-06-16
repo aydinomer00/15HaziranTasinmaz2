@@ -1,86 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PropertyService } from '../../services/property.service';
-import { Property } from '../models/property.model';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+interface Property {
+  id: number;
+  name: string;
+  city: string;
+}
+
 @Component({
   selector: 'app-property',
   templateUrl: './property.component.html',
-  styleUrls: ['./property.component.css']
+  styleUrls: ['./property.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule]
 })
-export class PropertyComponent implements OnInit {
+export class PropertyComponent {
   properties: Property[] = [];
   selectedProperty: Property | null = null;
   propertyForm: FormGroup;
 
-  constructor(private propertyService: PropertyService, private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {
     this.propertyForm = this.fb.group({
-      id: [null],
-      name: ['', Validators.required],
-      propertyId: [null],
-      userId: [null],
-      city: ['', Validators.required],
-      district: [''],
-      neighborhood: [''],
-      plot: [''],
-      parcel: [''],
-      type: [''],
-      coordinates: ['']
+      name: [''],
+      city: ['']
     });
   }
 
-  ngOnInit(): void {
-    this.loadProperties();
+  addProperty() {
+    // Implement add property logic
   }
 
-  loadProperties(): void {
-    this.propertyService.getProperties().subscribe((data: Property[]) => {
-      this.properties = data;
-    });
-  }
-
-  addProperty(): void {
-    this.selectedProperty = {
-      id: 0,
-      name: '',
-      propertyId: 0,
-      userId: 0,
-      city: '',
-      district: '',
-      neighborhood: '',
-      plot: '',
-      parcel: '',
-      type: '',
-      coordinates: ''
-    };
-    this.propertyForm.reset(this.selectedProperty);
-  }
-
-  editProperty(property: Property): void {
+  editProperty(property: Property) {
     this.selectedProperty = property;
     this.propertyForm.patchValue(property);
   }
 
-  deleteProperty(id: number): void {
-    this.propertyService.deleteProperty(id).subscribe(() => {
-      this.loadProperties();
-    });
+  deleteProperty(id: number) {
+    // Implement delete property logic
   }
 
-  onSubmit(): void {
-    if (this.propertyForm.invalid) {
-      return;
-    }
-
-    if (this.selectedProperty && this.selectedProperty.id) {
-      this.propertyService.updateProperty(this.propertyForm.value).subscribe(() => {
-        this.loadProperties();
-        this.selectedProperty = null;
-      });
+  onSubmit() {
+    if (this.selectedProperty) {
+      // Update existing property
     } else {
-      this.propertyService.addProperty(this.propertyForm.value).subscribe(() => {
-        this.loadProperties();
-        this.selectedProperty = null;
-      });
+      // Add new property
     }
   }
 }
